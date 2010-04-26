@@ -63,20 +63,6 @@ ExtensionsProject.implement(String, :expand_tabs) do
 end
 
 
-ExtensionsProject.implement(String, :indent) do
-  class String
-    #
-    # Indents the string +n+ spaces.
-    #
-    def indent(n)
-      n = n.to_int
-      return outdent(-n) if n < 0
-      gsub(/^/, " "*n)
-    end
-  end
-end
-
-
 ExtensionsProject.implement(String, :outdent) do
   class String
     #
@@ -100,39 +86,6 @@ ExtensionsProject.implement(String, :outdent) do
       n = n.to_int
       return indent(-n) if n < 0
       tabto(leftmost_indent - n)
-    end
-  end
-end
-
-
-ExtensionsProject.implement(String, :tabto) do
-  class String
-    #
-    # Move the string to the <tt>n</tt>th column.  Relative indentation is preserved.
-    # Column indices begin at 0, so the result is that the leftmost character of
-    # the string has +n+ spaces before it.
-    #
-    # Examples:
-    #   "xyz".tabto(0)           # -> "xyz"
-    #   "xyz".tabto(1)           # -> " xyz"
-    #   "xyz".tabto(2)           # -> "  xyz"
-    #   "   xyz".tabto(1)        # -> " xyz"
-    #
-    #   str = <<EOF
-    #       Hello, my name
-    #     is Gerald.
-    #   EOF
-    #   str.tabto(5) == <<EOF    # -> true
-    #          Hello, my name
-    #        is Gerald.
-    #   EOF
-    #
-    def tabto(n)
-      n = n.to_int
-      n = 0 if n < 0
-      find = " " * leftmost_indent()
-      replace = " " * (n)
-      gsub(/^#{find}/, replace)
     end
   end
 end
